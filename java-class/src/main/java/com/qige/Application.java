@@ -11,6 +11,7 @@ import com.qige.method.MethodInfo;
 import com.qige.method.TargetClassDefinition;
 
 @SpringBootApplication
+// 使用此注解 开启扫描拥有某注解的目标方法
 @EnableCollectAnnotionMethodInfo(packages="com.qige")
 public class Application  implements CommandLineRunner{
 	@Autowired
