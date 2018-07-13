@@ -89,6 +89,14 @@
               <!-- 在根据命令打包指定环境下的文件 -->
                 <directory>src/main/resources/${profiles.active}</directory>
             </resource>
+            
+            <resource>
+              <!-- 此处定义不同环境的log文件并定义在不同的文件夹下： 定义一个文件夹 文件夹里面 文件名要与${profiles.active} 相同
+              这样打包的时候会把src/main/resources/${profiles.active}打进去 也会把src/main/resources/log/${profiles.active}打进去
+              也可以不这么做 直接将log文件定义在dev或者test中的配置文件夹也可以（和yml放在一起） 不管log文件直接放在dev或者test配置文件夹里还是在定义一个专门放log的文件夹
+              yml文件只需要 config: classpath:log4j2.yml 即可 他找的是类路径 而maven打包的时候 这些文件也是打在类路径下-->
+                <directory>src/main/resources/log/${profiles.active}</directory>
+            </resource>
         </resources>
     </build>
 </project>
