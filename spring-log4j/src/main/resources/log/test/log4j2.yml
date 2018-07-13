@@ -1,0 +1,64 @@
+Configuration:  
+  status: warn  
+
+  Properties: # 定义变量  
+    Property:         
+      - name: log.path  
+        value: D:\\log  
+      - name: project.name  
+        value: spring-boot-log
+      - name: log.pattern
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p ${PID:-} [%15.15t] %-30.30C{1.} : %m%n"
+
+  Appenders:  
+    Console:  #输出到控制台  
+      name: CONSOLE  
+      target: SYSTEM_OUT  
+      ThresholdFilter:  
+        level: trace
+        onMatch: ACCEPT  
+        onMismatch: DENY  
+      PatternLayout:  
+        pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"  
+
+    # 输出到文件，超过128MB归档
+    RollingFile:   
+      - name: ROLLING_FILE  
+        ignoreExceptions: false  
+        fileName: ${log.path}/${project.name}.log  
+        filePattern: "${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"  
+        PatternLayout:  
+          pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"  
+        Policies:              # 这是一种策略，即 当文件什么情况下 在建一个文件 原文件保留
+          SizeBasedTriggeringPolicy:   # 文件大小
+            size: "128 MB"  
+        DefaultRolloverStrategy:  
+          max: 1000
+          
+      - name: BUSSINESS_ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/bussiness/${project.name}_bussiness.log
+        filePattern: "${log.path}/bussiness/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        PatternLayout:
+          pattern: ${log.pattern}
+        Policies:
+          TimeBasedTriggeringPolicy:  # 按天分类
+            modulate: true
+            interval: 1
+        DefaultRolloverStrategy:     # 文件最多100个
+          max: 100
+
+  Loggers:  
+    Root:  
+      level: info  
+      AppenderRef:  
+        - ref: CONSOLE        
+          level: info       # 自定义日志级别,ALL级别可以记录到 访问一次接口 就打印一堆东西
+        - ref: ROLLING_FILE
+          level: info
+    Logger:
+      - name: bussiness
+        level: info
+        additivity: false
+        AppenderRef:
+          - ref: BUSSINESS_ROLLING_FILE
