@@ -1,0 +1,5 @@
+server:
+  port: 7901
+#这块可以不配置 因为程序启动时候会去找log4j2.yml这个文件 多环境配置会用到这个文件
+logging:
+  config: classpath:log4j2.yml
