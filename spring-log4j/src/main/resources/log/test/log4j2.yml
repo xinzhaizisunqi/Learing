@@ -58,7 +58,7 @@ Configuration:
           level: info
     Logger:
       - name: bussiness
-        level: info
+        level: ALL
         additivity: false
         AppenderRef:
           - ref: BUSSINESS_ROLLING_FILE
