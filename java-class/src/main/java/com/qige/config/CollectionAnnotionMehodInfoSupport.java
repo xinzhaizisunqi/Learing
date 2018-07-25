@@ -11,6 +11,15 @@ import com.qige.method.TargetClassDefinition;
 
 
 
+/**
+ * spring boot 启动的时候 {@code} AbstractApplicationContext  的refresh()方法会走，走的过程当中
+ * 会执行一些逻辑 调用registerBeanDefinitions这个方法 所以这个类在作为bean注入的时候 会执行registerBeanDefinitions
+ * 方法，{@code PostProcessorRegistrationDelegate invokeBeanFactoryPostProcessors}执行一些逻辑先会执行
+ * postProcessBeanDefinitionRegistry 再去执行invokeBeanFactoryPostProcessors 所以如果spring 上下文中存在
+ * 实现了BeanFactoryPostProcessor接口的类 和 实现了ImportBeanDefinitionRegistrar接口的类
+ * 那么一定是ImportBeanDefinitionRegistrar这个先执行
+ *
+ */
 public class CollectionAnnotionMehodInfoSupport  implements ImportBeanDefinitionRegistrar{
 	
 	private static final String COLLECT_TARGET_CHECK_ANNO_ATTR_PACKAGES = "packages";
